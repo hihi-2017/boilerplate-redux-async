@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Post = ({title}) => (
-  <div>{title}</div>
+const Post = (props) => (
+  <div><a href={`http://reddit.com/${props.permalink}`}>{props.title}</a>{console.log(props)}</div>
 )
 
 Post.propTypes = {
