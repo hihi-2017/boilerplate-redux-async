@@ -7,8 +7,15 @@ export const receivePosts = (posts) => {
   }
 }
 
+export const startLoading = () => {
+  return {
+    type: 'START_LOADING'
+  }
+}
+
 export function fetchPosts (subreddit) {
   return (dispatch) => {
+    dispatch(startLoading())
     request
       .get(`/api/reddit/subreddit/${subreddit}`)
       .end((err, res) => {

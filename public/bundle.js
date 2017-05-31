@@ -10707,10 +10707,15 @@ var _subreddits = __webpack_require__(105);
 
 var _subreddits2 = _interopRequireDefault(_subreddits);
 
+var _loading = __webpack_require__(356);
+
+var _loading2 = _interopRequireDefault(_loading);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
-  subreddits: _subreddits2.default
+  subreddits: _subreddits2.default,
+  loading: _loading2.default
 });
 
 /***/ }),
@@ -10762,7 +10767,7 @@ exports['default'] = thunk;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.receivePosts = undefined;
+exports.startLoading = exports.receivePosts = undefined;
 exports.fetchPosts = fetchPosts;
 
 var _superagent = __webpack_require__(232);
@@ -10780,8 +10785,15 @@ var receivePosts = exports.receivePosts = function receivePosts(posts) {
   };
 };
 
+var startLoading = exports.startLoading = function startLoading() {
+  return {
+    type: 'START_LOADING'
+  };
+};
+
 function fetchPosts(subreddit) {
   return function (dispatch) {
+    dispatch(startLoading());
     _superagent2.default.get('/api/reddit/subreddit/' + subreddit).end(function (err, res) {
       if (err) {
         console.error(err.message);
@@ -10912,8 +10924,7 @@ var Post = function Post(props) {
       'div',
       null,
       _moment2.default.unix(props.created).format('MMMM Do YYYY')
-    ),
-    console.log(props.created)
+    )
   );
 };
 
@@ -10951,11 +10962,12 @@ var _Post2 = _interopRequireDefault(_Post);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Subreddit = function Subreddit(_ref) {
-  var subreddits = _ref.subreddits;
+  var subreddits = _ref.subreddits,
+      loading = _ref.loading;
   return _react2.default.createElement(
     'div',
     null,
-    subreddits.map(function (post, i) {
+    loading ? 'loading' : subreddits.map(function (post, i) {
       return _react2.default.createElement(_Post2.default, _extends({
         key: i
       }, post));
@@ -10990,7 +11002,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    subreddits: state.subreddits
+    subreddits: state.subreddits,
+    loading: state.loading
   };
 };
 
@@ -41973,6 +41986,34 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 355;
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var loading = function loading() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'START_LOADING':
+      return true;
+
+    case 'RECEIVE_POSTS':
+      return false;
+
+    default:
+      return state;
+  }
+};
+
+exports.default = loading;
 
 /***/ })
 /******/ ]);

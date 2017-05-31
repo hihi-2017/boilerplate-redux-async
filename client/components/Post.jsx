@@ -14,7 +14,6 @@ const Post = (props) => (
     <div>
       {moment.unix(props.created).format('MMMM Do YYYY')}
     </div>
-    {console.log(props.created)}
   </div>
 )
 
