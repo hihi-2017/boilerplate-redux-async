@@ -6,7 +6,7 @@ class LoadSubreddit extends React.Component {
   constructor(props) {
     super(props)
     this.state= {
-      subreddit: ''
+      subreddit: 'bitcoin'
     }
   }
 

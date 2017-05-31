@@ -10830,7 +10830,7 @@ var LoadSubreddit = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (LoadSubreddit.__proto__ || Object.getPrototypeOf(LoadSubreddit)).call(this, props));
 
     _this.state = {
-      subreddit: ''
+      subreddit: 'bitcoin'
     };
     return _this;
   }
@@ -10899,7 +10899,12 @@ var Post = function Post(props) {
       { href: 'http://reddit.com/' + props.permalink },
       props.title
     ),
-    console.log(props)
+    _react2.default.createElement(
+      'div',
+      null,
+      props.thumbnail != 'self' && props.thumbnail != 'default' ? _react2.default.createElement('img', { src: props.thumbnail }) : ''
+    ),
+    console.log(props.thumbnail)
   );
 };
 
