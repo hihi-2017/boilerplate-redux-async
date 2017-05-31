@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 const Post = (props) => (
   <div>
@@ -10,7 +11,10 @@ const Post = (props) => (
       {(props.thumbnail != 'self' && props.thumbnail != 'default') ?
       <img src={props.thumbnail} /> : ''}
     </div>
-    {console.log(props.thumbnail)}
+    <div>
+      {moment.unix(props.created).format('MMMM Do YYYY')}
+    </div>
+    {console.log(props.created)}
   </div>
 )
 
