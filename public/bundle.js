@@ -10677,12 +10677,17 @@ var _SubredditContainer = __webpack_require__(103);
 
 var _SubredditContainer2 = _interopRequireDefault(_SubredditContainer);
 
+var _ErrorContainer = __webpack_require__(357);
+
+var _ErrorContainer2 = _interopRequireDefault(_ErrorContainer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App() {
   return _react2.default.createElement(
     'div',
     { className: 'app-container' },
+    _react2.default.createElement(_ErrorContainer2.default, null),
     _react2.default.createElement(_LoadSubreddit2.default, null),
     _react2.default.createElement(_SubredditContainer2.default, null)
   );
@@ -10711,11 +10716,16 @@ var _loading = __webpack_require__(356);
 
 var _loading2 = _interopRequireDefault(_loading);
 
+var _error = __webpack_require__(358);
+
+var _error2 = _interopRequireDefault(_error);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
   subreddits: _subreddits2.default,
-  loading: _loading2.default
+  loading: _loading2.default,
+  error: _error2.default
 });
 
 /***/ }),
@@ -10791,15 +10801,22 @@ var startLoading = exports.startLoading = function startLoading() {
   };
 };
 
+var newError = function newError(message) {
+  return {
+    type: 'NEW_ERROR',
+    message: message
+  };
+};
+
 function fetchPosts(subreddit) {
   return function (dispatch) {
     dispatch(startLoading());
     _superagent2.default.get('/api/reddit/subreddit/' + subreddit).end(function (err, res) {
       if (err) {
-        console.error(err.message);
-        return;
+        dispatch(newError(err.message));
+      } else {
+        dispatch(receivePosts(res.body));
       }
-      dispatch(receivePosts(res.body));
     });
   };
 }
@@ -42008,12 +42025,76 @@ var loading = function loading() {
     case 'RECEIVE_POSTS':
       return false;
 
+    case 'NEW_ERROR':
+      return false;
+
     default:
       return state;
   }
 };
 
 exports.default = loading;
+
+/***/ }),
+/* 357 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(14);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(34);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ErrorContainer = function ErrorContainer(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    props.message ? props.message : ''
+  );
+};
+
+function mapStateToProps(state) {
+  return {
+    message: state.error
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(ErrorContainer);
+
+/***/ }),
+/* 358 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var error = function error() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments[1];
+
+  console.log(action);
+  switch (action.type) {
+    case 'NEW_ERROR':
+      return action.message;
+
+    default:
+      return state;
+  }
+};
+
+exports.default = error;
 
 /***/ })
 /******/ ]);

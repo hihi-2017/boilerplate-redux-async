@@ -5,7 +5,10 @@ const loading = (state = false, action) => {
 
     case 'RECEIVE_POSTS':
       return false
-      
+
+    case 'NEW_ERROR':
+      return false
+
     default:
       return state
   }
